@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <script type="module" src="javascripts/index.js"></script>
+        <link rel="stylesheet" href="stylesheets/solitaire.css">
+    </head>
+    <body onload="setupBoard();">
+        <div id="gameboard" class="gameboard">
+            <div class="left">
+                <div class="row">
+                    <div class="cardContainer" 
+                        id="cardpile"></div>
+                    <div class="cardContainer" 
+                        id="showpile"></div>
+                    <div class="spacer" id="spacer"></div>
+                    <div class="cardContainer" id="target1"></div>
+                    <div class="cardContainer" id="target2"></div>
+                    <div class="cardContainer" id="target3"></div>
+                    <div class="cardContainer" id="target4"></div>
+                </div>
+                <div class="row">
+                    <div class="cardContainer" id="pile1"></div>
+                    <div class="cardContainer" id="pile2"></div>
+                    <div class="cardContainer" id="pile3"></div>
+                    <div class="cardContainer" id="pile4"></div>
+                    <div class="cardContainer" id="pile5"></div>
+                    <div class="cardContainer" id="pile6"></div>
+                    <div class="cardContainer" id="pile7"></div>
+                </div>
+            </div>
+            <div class="right">
+                <button id="resetGame" >Reset Game</button>
+            </div>
+        </div>
+    </body>
+</html>
