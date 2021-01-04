@@ -15,4 +15,6 @@ function setupBoard() {
 }
 
 window.setupBoard = setupBoard;
+window.getRandomIntInclusive = getRandomIntInclusive;
+window.solitaire = solitaire;
 
