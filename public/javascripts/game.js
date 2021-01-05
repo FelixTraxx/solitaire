@@ -1,6 +1,7 @@
 import { Card } from './card.js'
 import { Pile } from './pile.js';
 import { Button } from './button.js';
+import { Modal } from './modal.js';
 
 class Game {
 
@@ -19,6 +20,7 @@ class Game {
         this.dragData = {};
         this.pilesCompleted = 0;
         this.setupGame();
+        this.modal = new Modal();
     }
 
     clickCardInCardPile(payload) {
@@ -140,9 +142,7 @@ class Game {
                 if(dropCard.value === 13) {
                     this.pilesCompleted += 1;
                     if(this.pilesCompleted === 4) {
-                        setTimeout(function() {
-                            alert("Congratulations you won!!!!");
-                        }, 1000);                        
+                        this.modal.openDialog();                        
                     }
                 }
                 return;
