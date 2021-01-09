@@ -19,6 +19,7 @@ class Game {
         this.cards = [];
         this.dragData = {};
         this.pilesCompleted = 0;
+        this.cardValueCompleted = 0;
         this.setupGame();
         this.modal = new Modal();
     }
@@ -41,7 +42,42 @@ class Game {
             }
         }
 
-    }   
+    }  
+
+    highestTargetPilesFilled() {
+        var lowest = 0;
+
+        if(this.areTargetPilesFilled() === false) {
+            return 0;
+        }
+
+        lowest = this.targets[0].getTopCard().value;
+
+        for(var i = 0; i < this.targets.length; i++) {
+            if(this.targets[i].getSize() > 0) {
+                var currentValue = this.targets[i].getTopCard().value;
+                if(currentValue < lowest) {
+                    lowest = currentValue;
+                }
+            }
+        }
+        return lowest;
+    }
+    
+    areTargetPilesFilled() {
+        var numFilled = 0;
+        for(var i = 0; i < this.targets.length; i++) {
+            if(this.targets[i].getSize() > 0) {
+                numFilled++;
+            }
+        }
+        if(numFilled === 4) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     
     clickCardInPilePile(payload) {
         var card = payload.card;
@@ -100,6 +136,52 @@ class Game {
         return returnPile;
     }
 
+    moveNextValue(newValue) {
+        var showTopCard = this.showpile.getTopCard();
+
+        if(showTopCard !== undefined && 
+           showTopCard !== null && 
+           showTopCard.value === newValue) {
+            for(var i = 0; i < this.targets.length; i++) {
+                var currentSuit = this.targets[i].getTopCard().suit;
+                if(showTopCard.suit === currentSuit) {
+                    this.showpile.removeLastCard();
+                    this.targets[i].addCard(showTopCard);
+                    if(showTopCard.value === 13) {
+                        this.checkForWinner();
+                    }
+                }
+            }
+        }
+
+        for(var j = 0; j < this.piles.length; j++) {
+            var pileTopCard = this.piles[j].getTopCard();
+            if(pileTopCard !== undefined && 
+                pileTopCard !== null && 
+                pileTopCard.value === newValue &&
+                pileTopCard.isFaceDown() === false) {
+                for(var i = 0; i < this.targets.length; i++) {
+                    var currentValue = this.targets[i].getTopCard().value;
+                    var currentSuit = this.targets[i].getTopCard().suit;
+                    if(pileTopCard.suit === currentSuit) {
+                        this.piles[j].removeLastCard();
+                        this.targets[i].addCard(pileTopCard);
+                        if(pileTopCard.value === 13) {
+                            this.checkForWinner();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    checkForWinner() {
+        this.pilesCompleted += 1;
+        if(this.pilesCompleted === 4) {
+            this.modal.openDialog();                        
+        }
+    }
+
     handleCardDropWithPile(event) {
         var payload = event.detail;
         var dropCard = this.dragData.card;
@@ -129,7 +211,11 @@ class Game {
             if(lastCard === undefined) {
                 if(dropCard.value === 1) {
                     var fromCard = fromPile.removeLastCard();
-                    toPile.addCard(fromCard);
+                    toPile.addCard(fromCard);                        
+                    var targetValue = this.highestTargetPilesFilled();
+                    if(targetValue > 0) {
+                        this.moveNextValue(targetValue + 1);
+                    }
                 }
                 return;
             }  
@@ -140,10 +226,11 @@ class Game {
                 var fromCard = fromPile.removeLastCard();
                 toPile.addCard(fromCard);
                 if(dropCard.value === 13) {
-                    this.pilesCompleted += 1;
-                    if(this.pilesCompleted === 4) {
-                        this.modal.openDialog();                        
-                    }
+                    this.checkForWinner();
+                }
+                var targetValue = this.highestTargetPilesFilled();
+                if(targetValue > 0) {
+                    this.moveNextValue(targetValue + 1);
                 }
                 return;
             }
