@@ -17,10 +17,6 @@ class Pile {
         this.type = type;
     }
 
-    handleClick(event) {
-
-    }
-
     handleDragOver(event) {
         event.preventDefault();
     }
