@@ -298,20 +298,10 @@ class Game {
             }           
         }
 
-        // These Drag and Drop piles are allowed
-        var card = fromPile.removeLastCard();
-        if(fromPile.type === "show" && toPile.type === "card") {
-            card.flipCard();
-        }
-        else if(fromPile.type === "card" && toPile.type === "show") {
-            card.flipCard();
-        }
-        toPile.addCard(card);
+
     }
 
     handleButtonClick(event) {
-        var payload = event.detail;
-        var button = payload.button;
 
         this.resetGame();
     }
@@ -345,14 +335,14 @@ class Game {
     resetGame() {
         this.pilesCompleted = 0;
         // Remove the cards from the piles.
-        for(var pileIndex = 0; pileIndex < 7; pileIndex++) {
+        for(var pileIndex = 0; pileIndex < this.piles.length; pileIndex++) {
             var length = this.piles[pileIndex].getSize();
             for(var cardIndex = 0; cardIndex < length; cardIndex++) {
                 var card = this.piles[pileIndex].removeLastCard();
             }
         }
         // Remove the cards from the target piles.
-        for(var pileIndex = 0; pileIndex < 4; pileIndex++) {
+        for(var pileIndex = 0; pileIndex < this.targets.length; pileIndex++) {
             var length = this.targets[pileIndex].getSize();
             for(var cardIndex = 0; cardIndex < length; cardIndex++) {
                 var card = this.targets[pileIndex].removeLastCard();
@@ -384,7 +374,7 @@ class Game {
             this.cardpile.addCard(this.cards[i]);
         } 
         // Distribute the cards to the other piles.
-        for(var pileIndex = 0; pileIndex < 7; pileIndex++) {
+        for(var pileIndex = 0; pileIndex < this.piles.length; pileIndex++) {
             var numCards = pileIndex + 1;
             var card;
             for(var cardIndex = 0; cardIndex < numCards; cardIndex++) {
