@@ -1141,3 +1141,192 @@ test('resetGame', () => {
 
 });
 
+test('highestTargetPilesFilled', () => {
+    game.areTargetPilesFilled = () => true;
+
+    let targetPile = {};
+    let topCard = {};
+    topCard.value = 1;
+
+    targetPile.getTopCard = () => topCard;
+    targetPile.getSize = () => 1;
+
+    game.targets = [];
+    game.targets.push(targetPile);
+
+    let lowest = game.highestTargetPilesFilled();
+
+    expect(lowest).toBe(1);
+
+});
+
+    
+test('areTargetPilesFilled piles are filled', () => {
+
+    let pile1 = {};
+    pile1.getSize = () => 1;
+
+    let pile2 = {};
+    pile2.getSize = () => 1;
+    
+    let pile3 = {};
+    pile3.getSize = () => 1;
+    
+    let pile4 = {};
+    pile4.getSize = () => 1;    
+
+    game.targets = [];
+
+    game.targets.push(pile1);
+    game.targets.push(pile2);
+    game.targets.push(pile3);
+    game.targets.push(pile4);
+
+    let result = game.areTargetPilesFilled();
+
+    expect(result).toBe(true);
+
+});
+
+test('areTargetPilesFilled piles are not filled', () => {
+
+    let pile1 = {};
+    pile1.getSize = () => 1;
+
+    let pile2 = {};
+    pile2.getSize = () => 1;
+    
+    let pile3 = {};
+    pile3.getSize = () => 1;
+    
+    let pile4 = {};
+    pile4.getSize = () => 0;    
+
+    game.targets = [];
+
+    game.targets.push(pile1);
+    game.targets.push(pile2);
+    game.targets.push(pile3);
+    game.targets.push(pile4);
+
+    let result = game.areTargetPilesFilled();
+
+    expect(result).toBe(false);
+
+});
+
+test('getPile return pile', () => {
+
+    let pile = {};
+    pile.name = 'pile1';
+
+    game.piles = [];
+
+    game.piles.push(pile);
+
+    let target = {};
+    target.name = 'target1';
+
+    game.targets = [];
+
+    game.targets.push(target);
+
+    game.cardpile = {};
+    game.cardpile.name = 'cardpile';
+
+    game.showpile = {};
+    game.showpile.name = 'showpile';
+
+    let returnPile = game.getPile('pile1');
+
+    expect(returnPile).toBe(pile);
+
+
+});
+
+test('getPile return target', () => {
+
+    let pile = {};
+    pile.name = 'pile1';
+
+    game.piles = [];
+
+    game.piles.push(pile);
+
+    let target = {};
+    target.name = 'target1';
+
+    game.targets = [];
+
+    game.targets.push(target);
+
+    game.cardpile = {};
+    game.cardpile.name = 'cardpile';
+
+    game.showpile = {};
+    game.showpile.name = 'showpile';
+
+    let returnPile = game.getPile('target1');
+
+    expect(returnPile).toBe(target);
+
+
+});
+
+test('getPile return cardpile', () => {
+
+    let pile = {};
+    pile.name = 'pile1';
+
+    game.piles = [];
+
+    game.piles.push(pile);
+
+    let target = {};
+    target.name = 'target1';
+
+    game.targets = [];
+
+    game.targets.push(target);
+
+    game.cardpile = {};
+    game.cardpile.name = 'cardpile';
+
+    game.showpile = {};
+    game.showpile.name = 'showpile';
+
+    let returnPile = game.getPile('cardpile');
+
+    expect(returnPile).toBe(game.cardpile);
+
+
+});
+
+test('getPile return showpile', () => {
+
+    let pile = {};
+    pile.name = 'pile1';
+
+    game.piles = [];
+
+    game.piles.push(pile);
+
+    let target = {};
+    target.name = 'target1';
+
+    game.targets = [];
+
+    game.targets.push(target);
+
+    game.cardpile = {};
+    game.cardpile.name = 'cardpile';
+
+    game.showpile = {};
+    game.showpile.name = 'showpile';
+
+    let returnPile = game.getPile('showpile');
+
+    expect(returnPile).toBe(game.showpile);
+
+
+});
