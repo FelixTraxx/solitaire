@@ -1330,3 +1330,104 @@ test('getPile return showpile', () => {
 
 
 });
+
+test('moveNextValue showpile to targetpile', () => {
+
+    let showCard = {};
+    showCard.value = 13;
+    showCard.suit = 'diamond';
+
+    let targetCard = {};
+    targetCard.value = 12;
+    targetCard.suit = 'diamond';
+
+    game.showpile = {};
+    game.showpile.getTopCard = () => showCard;
+    game.showpile.removeLastCard = () => showCard;
+
+    game.targets = [];
+    let targetPile = {};
+    targetPile.getTopCard = () => targetCard;
+    targetPile.addCard = () => {};
+    game.targets.push(targetPile);
+
+    game.piles = [];
+    
+    game.checkForWinner = () => {};
+
+    var spyGetTopCardShowPile = jest.spyOn(game.showpile, 'getTopCard');
+    var spyGetTopCardTargetPile = jest.spyOn(targetPile, 'getTopCard');
+    var spyRemoveLastCard = jest.spyOn(game.showpile, 'removeLastCard');
+    var spyAddCard = jest.spyOn(targetPile, 'addCard');
+    var spyCheckForWinner = jest.spyOn(game,'checkForWinner');
+
+    game.moveNextValue(13);
+
+    expect(spyGetTopCardShowPile).toHaveBeenCalledTimes(1);
+    expect(spyGetTopCardTargetPile).toHaveBeenCalledTimes(1);
+    expect(spyRemoveLastCard).toHaveBeenCalledTimes(1);
+    expect(spyAddCard).toHaveBeenCalledTimes(1);
+    expect(spyCheckForWinner).toHaveBeenCalledTimes(1);
+
+});
+
+test('moveNextValue pile to targetpile', () => {
+
+    let showCard = undefined;
+
+    let pileCard = {};
+    pileCard.value = 13;
+    pileCard.suit = 'diamond';
+    pileCard.isFaceDown = () => false;
+
+    let targetCard = {};
+    targetCard.value = 12;
+    targetCard.suit = 'diamond';
+
+    game.showpile = {};
+    game.showpile.getTopCard = () => showCard;
+    game.showpile.removeLastCard = () => showCard;
+
+    game.targets = [];
+    let targetPile = {};
+    targetPile.getTopCard = () => targetCard;
+    targetPile.addCard = () => {};
+    game.targets.push(targetPile);
+
+    game.piles = [];
+    let pile = {};
+    pile.getTopCard = () => pileCard;
+    pile.addCard = () => {};
+    pile.removeLastCard = () => pileCard;
+    game.piles.push(pile);
+    
+    game.checkForWinner = () => {};
+
+    var spyGetTopCardShowPile = jest.spyOn(game.showpile, 'getTopCard');
+    var spyGetTopCardTargetPile = jest.spyOn(pile, 'getTopCard');
+    var spyRemoveLastCard = jest.spyOn(pile, 'removeLastCard');
+    var spyAddCard = jest.spyOn(targetPile, 'addCard');
+    var spyCheckForWinner = jest.spyOn(game,'checkForWinner');
+
+    game.moveNextValue(13);
+
+    expect(spyGetTopCardShowPile).toHaveBeenCalledTimes(1);
+    expect(spyGetTopCardTargetPile).toHaveBeenCalledTimes(1);
+    expect(spyRemoveLastCard).toHaveBeenCalledTimes(1);
+    expect(spyAddCard).toHaveBeenCalledTimes(1);
+    expect(spyCheckForWinner).toHaveBeenCalledTimes(1);
+
+});
+
+test('checkForWinner', () => {
+
+    game.pilesCompleted = 3;
+    game.modal = {};
+    game.modal.openDialog = () => {};
+
+    let spyOpenDialog = jest.spyOn(game.modal, 'openDialog');
+
+    game.checkForWinner();
+
+    expect(spyOpenDialog).toHaveBeenCalledTimes(1);
+});
