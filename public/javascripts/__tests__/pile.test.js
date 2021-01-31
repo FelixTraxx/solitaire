@@ -239,6 +239,20 @@ test('getAllDroppedCards', () => {
 
 });
 
+test('getAllDroppedCards with Cards', () => { 
+
+    let pileCard = {};
+    let pileCard2 = {};
+    pile.stack = [];
+    pile.stack.push(pileCard);
+    pile.stack.push(pileCard2);
+
+    let cardList = pile.getAllDroppedCards(pileCard);
+
+    expect(cardList.length).toBe(2);
+
+});
+
 test('getAllDroppedCards No Cards', () => { 
 
     pile.stack = [];
