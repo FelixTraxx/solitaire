@@ -179,12 +179,22 @@ test('clickCardInPilePile Card is FaceDown', () => {
     event.detail = {};
     event.detail.pileType = 'pile'; 
     event.detail.card = card;
+
+    game.piles = [];
+    game.getPileIndexById = () => 0;
+
+    let pile = {};
+    pile.moveToNextLevel = () => {};
+
+    game.piles.push(pile);
     
     const spyFlipCard = jest.spyOn(card, 'flipCard');
+    const spyMoveToNextLevel = jest.spyOn(pile,'moveToNextLevel');
 
     game.handleEvent(event);
 
     expect(spyFlipCard).toBeCalled();
+    expect(spyMoveToNextLevel).toBeCalled();
 
 });
 
@@ -1115,6 +1125,7 @@ test('resetGame', () => {
     let pilePile = {};
     pilePile.getSize = () => {};
     pilePile.addCard = () => {};
+    pilePile.moveToNextLevel = () => {};
     game.piles.push(pilePile);
 
     let targetPile = {};
@@ -1134,9 +1145,14 @@ test('resetGame', () => {
 
     game.pilesCompleted = 4;
 
+    let spyMoveToNextLevel = jest.spyOn(pilePile, 'moveToNextLevel');
+    let spyFlipCard = jest.spyOn(card, 'flipCard');
+
     game.resetGame();
 
     expect(game.pilesCompleted).toBe(0);
+    expect(spyMoveToNextLevel).toBeCalled();
+    expect(spyFlipCard).toBeCalled();
 
 
 });

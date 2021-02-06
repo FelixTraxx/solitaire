@@ -78,10 +78,20 @@ class Game {
             return false;
         }
     }
+
+    getPileIndexById(id) {
+        for(var i = 0; i < this.piles.length; i++) {
+            if(this.piles[i].name === id) {
+                return i;
+            }
+        }
+    }
     
     clickCardInPilePile(payload) {
         var card = payload.card;
+        var pileIndex = this.getPileIndexById(payload.pileId);
         if(card.isFaceDown()) {
+            this.piles[pileIndex].moveToNextLevel(card);
             card.flipCard();
         }
     }
@@ -381,6 +391,7 @@ class Game {
                 var card = this.cardpile.removeLastCard();
                 this.piles[pileIndex].addCard(card);
             }
+            this.piles[pileIndex].moveToNextLevel(card);
             card.flipCard();
         }                               
     }
@@ -435,6 +446,7 @@ class Game {
                 var card = this.cardpile.removeLastCard();
                 this.piles[pileIndex].addCard(card);
             }
+            this.piles[pileIndex].moveToNextLevel(card);
             card.flipCard();
         }
     }

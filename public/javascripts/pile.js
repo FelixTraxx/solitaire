@@ -113,6 +113,10 @@ class Pile {
         this.element.appendChild(card.getElement());   
     }
 
+    moveToNextLevel(card) {
+        card.setTop(23);
+    }
+
     removeLastCard() {
         var lastCard = this.stack.pop();
         this.element.removeChild(lastCard.getElement());
