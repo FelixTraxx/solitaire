@@ -234,6 +234,165 @@ test('handleCardDragStartWithPile', () => {
 
 });
 
+test('handleCardDropWithPile PilePile to ShowPile', () => {
+
+    event.type = 'carddropwithpile';
+    event.detail = {};
+    // To Pile Name
+    event.detail.pileName = 'show';
+
+    // Card on Target Pile
+    let card = undefined;
+
+    // Card to Drop from Pile Pile
+    let dropCard = {};
+
+    let fromPile = {};
+    fromPile.type = 'pile';
+    fromPile.removeLastCard = function() {
+        return dropCard;
+    }
+
+    let toPile = {};
+    toPile.type = 'show';
+    toPile.getTopCard = function() {
+        return card;
+    }
+    toPile.addCard = function() {
+
+    }
+
+    game.dragData = {};
+    game.dragData.card = {};
+    game.dragData.card.value = 1;
+    game.dragData.cards = [];
+    
+    // From Pile Name
+    game.dragData.pileName = 'pile1';
+
+    game.getPile = function(name) {
+        if(name === 'pile1') {
+            return fromPile;
+        }
+        else if(name === 'show') {
+            return toPile;
+        }
+    }
+
+    const spyHighestTargetPilesFilled = jest.spyOn(game,'highestTargetPilesFilled');
+
+    game.handleEvent(event);
+
+    expect(spyHighestTargetPilesFilled).toHaveBeenCalledTimes(0);
+
+});
+
+test('handleCardDropWithPile from Pile TargetPile', () => {
+
+    event.type = 'carddropwithpile';
+    event.detail = {};
+    // To Pile Name
+    event.detail.pileName = 'card';
+
+    // Card on Target Pile
+    let card = undefined;
+
+    // Card to Drop from Pile Pile
+    let dropCard = {};
+
+    let fromPile = {};
+    fromPile.type = 'target';
+    fromPile.removeLastCard = function() {
+        return dropCard;
+    }
+
+    let toPile = {};
+    toPile.type = 'card';
+    toPile.getTopCard = function() {
+        return card;
+    }
+    toPile.addCard = function() {
+
+    }
+
+    game.dragData = {};
+    game.dragData.card = {};
+    game.dragData.card.value = 1;
+    game.dragData.cards = [];
+    
+    // From Pile Name
+    game.dragData.pileName = 'target1';
+
+    game.getPile = function(name) {
+        if(name === 'target1') {
+            return fromPile;
+        }
+        else if(name === 'card') {
+            return toPile;
+        }
+    }
+
+    const spyHighestTargetPilesFilled = jest.spyOn(game,'highestTargetPilesFilled');
+
+    game.handleEvent(event);
+
+    expect(spyHighestTargetPilesFilled).toHaveBeenCalledTimes(0);
+
+});
+
+test('handleCardDropWithPile PilePile to CardPile', () => {
+
+    event.type = 'carddropwithpile';
+    event.detail = {};
+    // To Pile Name
+    event.detail.pileName = 'card';
+
+    // Card on Target Pile
+    let card = undefined;
+
+    // Card to Drop from Pile Pile
+    let dropCard = {};
+
+    let fromPile = {};
+    fromPile.type = 'pile';
+    fromPile.removeLastCard = function() {
+        return dropCard;
+    }
+
+    let toPile = {};
+    toPile.type = 'card';
+    toPile.getTopCard = function() {
+        return card;
+    }
+    toPile.addCard = function() {
+
+    }
+
+    game.dragData = {};
+    game.dragData.card = {};
+    game.dragData.card.value = 1;
+    game.dragData.cards = [];
+    
+    // From Pile Name
+    game.dragData.pileName = 'pile1';
+
+    game.getPile = function(name) {
+        if(name === 'pile1') {
+            return fromPile;
+        }
+        else if(name === 'card') {
+            return toPile;
+        }
+    }
+
+    const spyHighestTargetPilesFilled = jest.spyOn(game,'highestTargetPilesFilled');
+
+    game.handleEvent(event);
+
+    expect(spyHighestTargetPilesFilled).toHaveBeenCalledTimes(0);
+
+});
+
 test('handleCardDropWithPile Pile to Empty Target other targets empty', () => {
 
     event.type = 'carddropwithpile';
@@ -1161,6 +1320,33 @@ test('highestTargetPilesFilled', () => {
     game.areTargetPilesFilled = () => true;
 
     let targetPile = {};
+    let targetPile2 = {};
+    let topCard = {};
+    topCard.value = 2;
+
+    let topCard2 = {};
+    topCard2.value = 1;
+
+    targetPile.getTopCard = () => topCard;
+    targetPile.getSize = () => 1;
+
+    targetPile2.getTopCard = () => topCard2;
+    targetPile2.getSize = () => 1;
+
+    game.targets = [];
+    game.targets.push(targetPile);
+    game.targets.push(targetPile2);
+
+    let lowest = game.highestTargetPilesFilled();
+
+    expect(lowest).toBe(1);
+
+});
+
+test('highestTargetPilesFilled where target piles filled is false', () => {
+    game.areTargetPilesFilled = () => false;
+
+    let targetPile = {};
     let topCard = {};
     topCard.value = 1;
 
@@ -1172,10 +1358,9 @@ test('highestTargetPilesFilled', () => {
 
     let lowest = game.highestTargetPilesFilled();
 
-    expect(lowest).toBe(1);
+    expect(lowest).toBe(0);
 
 });
-
     
 test('areTargetPilesFilled piles are filled', () => {
 
@@ -1446,4 +1631,18 @@ test('checkForWinner', () => {
     game.checkForWinner();
 
     expect(spyOpenDialog).toHaveBeenCalledTimes(1);
+});
+
+test('getPileIndexById', () => {
+
+    game.piles = [];
+    let pile = {};
+    pile.name = 'test';
+
+    game.piles.push(pile);
+    
+    let index = game.getPileIndexById('test');
+
+    expect(index).toBe(0);
+
 });
