@@ -90,8 +90,11 @@ class Game {
     clickCardInPilePile(payload) {
         var card = payload.card;
         var pileIndex = this.getPileIndexById(payload.pileId);
+        var pileSize = this.piles[pileIndex].getSize();
         if(card.isFaceDown()) {
-            this.piles[pileIndex].moveToNextLevel(card);
+            if(pileSize > 1) {
+                this.piles[pileIndex].moveToNextLevel(card);
+            }
             card.flipCard();
         }
     }

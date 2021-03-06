@@ -185,6 +185,7 @@ test('clickCardInPilePile Card is FaceDown', () => {
 
     let pile = {};
     pile.moveToNextLevel = () => {};
+    pile.getSize = () => 2;
 
     game.piles.push(pile);
     
@@ -214,6 +215,11 @@ test('clickCardInPilePile Card is FaceUp', () => {
     event.detail = {};
     event.detail.pileType = 'pile'; 
     event.detail.card = card;
+
+    game.piles = [];
+    let pile = {};
+    pile.getSize = () => 2;
+    game.piles.push(pile);
     
     const spyFlipCard = jest.spyOn(card, 'flipCard');
 
