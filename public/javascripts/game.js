@@ -150,24 +150,7 @@ class Game {
     }
 
     moveNextValue(newValue) {
-        var showTopCard = this.showpile.getTopCard();
         var cardsMoved = 0;
-
-        if(showTopCard !== undefined && 
-           showTopCard !== null && 
-           showTopCard.value === newValue) {
-            for(var i = 0; i < this.targets.length; i++) {
-                var currentSuit = this.targets[i].getTopCard().suit;
-                if(showTopCard.suit === currentSuit) {
-                    this.showpile.removeLastCard();
-                    this.targets[i].addCard(showTopCard);
-                    cardsMoved++;
-                    if(showTopCard.value === 13) {
-                        this.checkForWinner();
-                    }
-                }
-            }
-        }
 
         for(var j = 0; j < this.piles.length; j++) {
             var pileTopCard = this.piles[j].getTopCard();
@@ -231,7 +214,7 @@ class Game {
                     var fromCard = fromPile.removeLastCard();
                     toPile.addCard(fromCard);                        
                     var targetValue = this.highestTargetPilesFilled();
-                    if(targetValue > 0) {
+                    if(targetValue > 0 && fromPile.type === "pile") {
                         var nextValue = targetValue + 1;
                         var cardsMoved = this.moveNextValue(nextValue);
                         nextValue++;
@@ -254,7 +237,8 @@ class Game {
                     this.checkForWinner();
                 }
                 var targetValue = this.highestTargetPilesFilled();
-                if(targetValue > 0) {
+                var nextValue = targetValue + 1;
+                if(targetValue > 0 && nextValue <= 13 && fromPile.type === "pile") {
                     var nextValue = targetValue + 1;
                     var cardsMoved = this.moveNextValue(nextValue);
                     nextValue++;
@@ -394,7 +378,9 @@ class Game {
                 var card = this.cardpile.removeLastCard();
                 this.piles[pileIndex].addCard(card);
             }
-            this.piles[pileIndex].moveToNextLevel(card);
+            if(pileIndex > 0) {
+                this.piles[pileIndex].moveToNextLevel(card);
+            }
             card.flipCard();
         }                               
     }
@@ -449,7 +435,9 @@ class Game {
                 var card = this.cardpile.removeLastCard();
                 this.piles[pileIndex].addCard(card);
             }
-            this.piles[pileIndex].moveToNextLevel(card);
+            if(pileIndex > 0) {
+                this.piles[pileIndex].moveToNextLevel(card);
+            }
             card.flipCard();
         }
     }
