@@ -192,6 +192,7 @@ class Game {
         var toPileName = payload.pileName;
         var fromPile = this.getPile(fromPileName);
         var toPile = this.getPile(toPileName);  
+        var cardsMoved = 0;
              
         // Prevent Drag and Drop to and from certain piles
         if(fromPile.type === "pile" && toPile.type === "card") {
@@ -212,13 +213,14 @@ class Game {
             if(lastCard === undefined) {
                 if(dropCard.value === 1) {
                     var fromCard = fromPile.removeLastCard();
-                    toPile.addCard(fromCard);                        
+                    toPile.addCard(fromCard);  
+                    cardsMoved++;                      
                     var targetValue = this.highestTargetPilesFilled();
                     if(targetValue > 0 && fromPile.type === "pile") {
                         var nextValue = targetValue + 1;
-                        var cardsMoved = this.moveNextValue(nextValue);
+                        var cardsMovedFromNext = this.moveNextValue(nextValue);
                         nextValue++;
-                        cardsMoved++;
+                        cardsMoved += cardsMovedFromNext;
                         while(cardsMoved === 4 && nextValue <= 13) {
                             cardsMoved = this.moveNextValue(nextValue);
                             nextValue++;
@@ -233,6 +235,7 @@ class Game {
             else if(lastCard.suit === dropCard.suit && lastCard.value === dropCard.value - 1) {
                 var fromCard = fromPile.removeLastCard();
                 toPile.addCard(fromCard);
+                cardsMoved++;
                 if(dropCard.value === 13) {
                     this.checkForWinner();
                 }
@@ -240,9 +243,9 @@ class Game {
                 var nextValue = targetValue + 1;
                 if(targetValue > 0 && nextValue <= 13 && fromPile.type === "pile") {
                     var nextValue = targetValue + 1;
-                    var cardsMoved = this.moveNextValue(nextValue);
+                    var cardsMovedFromNext = this.moveNextValue(nextValue);
                     nextValue++;
-                    cardsMoved++;
+                    cardsMoved += cardsMovedFromNext;
                     while(cardsMoved === 4 && nextValue <= 13) {
                         cardsMoved = this.moveNextValue(nextValue);
                         nextValue++;
