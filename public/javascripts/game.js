@@ -161,7 +161,8 @@ class Game {
                 for(var i = 0; i < this.targets.length; i++) {
                     var currentValue = this.targets[i].getTopCard().value;
                     var currentSuit = this.targets[i].getTopCard().suit;
-                    if(pileTopCard.suit === currentSuit) {
+                    if(pileTopCard.suit === currentSuit &&
+                        currentValue === (newValue - 1)) {
                         this.piles[j].removeLastCard();
                         this.targets[i].addCard(pileTopCard);
                         cardsMoved++;
