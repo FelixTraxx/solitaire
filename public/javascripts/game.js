@@ -219,8 +219,10 @@ class Game {
                     if(targetValue > 0 && fromPile.type === "pile") {
                         var nextValue = targetValue + 1;
                         var cardsMovedFromNext = this.moveNextValue(nextValue);
-                        nextValue++;
                         cardsMoved += cardsMovedFromNext;
+                        if(cardsMoved === 4) {
+                            nextValue++;
+                        }
                         while(cardsMoved === 4 && nextValue <= 13) {
                             cardsMoved = this.moveNextValue(nextValue);
                             nextValue++;
@@ -244,8 +246,10 @@ class Game {
                 if(targetValue > 0 && nextValue <= 13 && fromPile.type === "pile") {
                     var nextValue = targetValue + 1;
                     var cardsMovedFromNext = this.moveNextValue(nextValue);
-                    nextValue++;
                     cardsMoved += cardsMovedFromNext;
+                    if(cardsMoved === 4) {
+                        nextValue++;
+                    }
                     while(cardsMoved === 4 && nextValue <= 13) {
                         cardsMoved = this.moveNextValue(nextValue);
                         nextValue++;
